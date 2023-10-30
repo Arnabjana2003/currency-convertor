@@ -63,7 +63,7 @@ function InputBox({
             <div className="flex relative" onClick={()=>{setDrop(prev=>!prev)
             }}>
               <div className="w-[100px] border pl-2">{dropValue}</div>
-              <i className="absolute right-2 top-1">^</i>
+              <img src="https://w7.pngwing.com/pngs/551/108/png-transparent-arrow-illustration-arrow-icon-right-arrow-angle-web-design-internet-thumbnail.png" className={`absolute right-3 top-1 w-[20px] opacity-80 transition-all ease-in ${drop?"rotate-[270deg]":"rotate-90"}`}/>
             </div>
             <div className={`absolute top-8 right-2 z-10 bg-slate-400 rounded-lg overflow-hidden ${drop?"block":"hidden"}`}>
               <div className="rounded-md bg-white p-1 border flex">
