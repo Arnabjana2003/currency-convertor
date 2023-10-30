@@ -1,16 +1,28 @@
-import { useRef } from "react";
+import { useState } from "react";
 
 function InputBox({
   lable = "from",
   amount = 0,
   onAmountChng,
   disabled = false,
-  currOptions = [],
-  defaultOption = "",
+  currOptions,
   onCurrencyChng,
   className,
 }) {
-  const selectCurr = useRef(null);
+  
+  const [drop,setDrop] = useState(false)
+  const [dropValue,setDropValue] = useState("Select");
+
+  
+  const [options,setOptions] = useState([...currOptions]);
+ 
+  
+  const searchCurrency = (val)=>{
+    const filter = currOptions.filter((item)=>item.startsWith(val));
+    setOptions(filter)
+    
+  }
+
 
   return (
     <>
@@ -30,11 +42,11 @@ function InputBox({
           ></textarea>
         </div>
         <div>
-          <lable htmlFor="currency" className="font-semibold">
+          <label htmlFor="currency" className="font-semibold">
             Currency
-          </lable>
+          </label>
           <br />
-          <select
+          {/* <select
             id="currency"
             className="bg-transparent border rounded-md font-semibold uppercase"
             ref={selectCurr}
@@ -46,7 +58,31 @@ function InputBox({
                 {item}
               </option>
             ))}
-          </select>
+          </select> */}
+          <div className="relative">
+            <div className="flex relative" onClick={()=>{setDrop(prev=>!prev)
+            }}>
+              <div className="w-[100px] border pl-2">{dropValue}</div>
+              <i className="absolute right-2 top-1">^</i>
+            </div>
+            <div className={`absolute top-8 right-2 z-10 bg-slate-400 rounded-lg overflow-hidden ${drop?"block":"hidden"}`}>
+              <div className="rounded-md bg-white p-1 border flex">
+                <input type="text" placeholder="Serach" className="px-2 outline-none min-w-[150px]" onKeyUp={(e)=>searchCurrency(e.target.value.toLowerCase())}></input>
+                <img className="w-[20px] mr-2" src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRvlRbX-oPdQyUnWQLI23pCLC2UqElNtHZf25jl24AIMA&s" />
+              </div>
+              <div className="h-[200px] overflow-auto mt-3 px-2">
+                {options.length==0?"No currency found,Search a correct currency name":""}
+                <ul>
+                {options.map((item)=>(<li key={item} className="px-3 py-1 hover:bg-slate-300 rounded-md" onClick={(e)=>{
+                  setDropValue(e.target.innerText)
+                  setDrop(prev=>!prev)
+                  onCurrencyChng(e.target.innerText);
+                  }}>{item}
+                </li>))}
+                </ul>
+              </div>
+            </div>
+          </div>
         </div>
       </div>
     </>
